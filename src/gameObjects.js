@@ -1,4 +1,5 @@
 import * as UIModule from "./userInterface.js";
+import * as gameModule from "./game.js";
 
 /*
     Represents a 
@@ -48,8 +49,8 @@ export class Board {
 
 	Fire(cell_id) {}
 
-	PlaceShip(ship) {
-		let start = this.NextRandomPlacement(ship, 0, 0);
+	PlaceShip(ship, gameTurn) {
+		let start = this.NextRandomPlacement(ship, gameTurn);
 		console.log("StartPos\t" + start + "\tShip\t" + ship.id);
 		for (let i = 0; i < ship.length; i++) {
 			let y = start[0];
@@ -61,17 +62,35 @@ export class Board {
 		}
 	}
 
-	NextRandomPlacement(ship) {
-		let x_random = Math.floor(Math.random() * this.length);
+	NextRandomPlacement(ship, gameTurn) {
+		let yMin = 5;
+		let yLimit = 5;
+
 		let y_random = Math.floor(Math.random() * this.length);
-		return this.NextValidPlacement(ship, y_random, x_random);
+		let x_random = Math.floor(Math.random() * this.length);
+
+		if (gameTurn === gameModule.GameTurn.Player) {
+			if (y_random < yMin) {
+				y_random += yMin;
+			}
+		} else {
+			if (y_random >= yLimit) {
+				y_random -= yLimit;
+			}
+		}
+
+		return this.NextValidPlacement(
+			ship,
+			y_random,
+			x_random,
+			gameTurn,
+			yMin,
+			yLimit
+		);
 	}
 
-	NextValidPlacement(ship, y_start, x_start) {
+	NextValidPlacement(ship, y_start, x_start, gameTurn, yMin, yLimit) {
 		let len = ship.length;
-		console.log(
-			"Checking ship Start(y,x)\t" + ship.id + "\t" + y_start + x_start
-		);
 
 		for (let x = x_start; x < this.length; x++) {
 			// console.log("Checking x,y\t" + y_start + x);
@@ -90,7 +109,11 @@ export class Board {
 			}
 		}
 
-		return this.NextValidPlacement(ship, 0, 0);
+		if (gameTurn === gameModule.GameTurn.Player) {
+			return this.NextValidPlacement(ship, yMin, 0, gameTurn, yMin, yLimit);
+		} else {
+			return this.NextValidPlacement(ship, 0, 0, gameTurn, yMin, yLimit);
+		}
 	}
 
 	isValidPlacement(len, y_start, x_start) {

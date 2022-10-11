@@ -20,10 +20,10 @@ export class Game {
 	//TODO
 	PlaceAllShips() {
 		this.AllyShips.forEach((ship) => {
-			this.board.PlaceShip(ship);
+			this.board.PlaceShip(ship, GameTurn.Player);
 		});
 		this.EnemyShips.forEach((ship) => {
-			this.board.PlaceShip(ship);
+			this.board.PlaceShip(ship, GameTurn.Computer);
 		});
 	}
 }
@@ -33,7 +33,7 @@ export const GameState = {
 	Battle: Symbol("Battle"),
 };
 
-const GameTurn = {
+export const GameTurn = {
 	Player: Symbol("Player"),
 	Computer: Symbol("Computer"),
 };
