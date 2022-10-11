@@ -76,13 +76,10 @@ body {
 	margin-bottom: 0.1rem;
 }
 
-.hasShip {
+.hasShip[data-team="player"] {
 	background-color: var(--color4);
 }
 
-/* .hasShip[data-team="player"] {
-	background-color: var(--color3);
-} */
 .hit {
 	background-color: var(--color6);
 }
