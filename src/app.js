@@ -8,11 +8,14 @@ import * as AIMod from "./computerAi.js";
         - Display total score
         - Rendering new game/game over screens
 */
-
+const Game = new GameMod.Game();
 // Update UI to script definitions
 // Create game variable, initalize game state
 // Create UI, initialize UI state
-function Initialize() {}
+function Initialize() {
+	UIMod.Initialize();
+	Game.Initialize();
+}
 function NextMove() {}
 
 // draw game state to HTML document

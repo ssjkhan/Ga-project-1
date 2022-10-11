@@ -7,9 +7,12 @@ import * as GameObjectMod from "./gameObjects.js";
 UIMod.Initialize();
 var game = new GameMod.Game(10);
 game.Initialize();
-game.board.Render();
 
-console.log(game.AllyShips);
-game.PlaceAllShips();
+let btn = document.querySelector("#button1");
+btn.addEventListener("click", game.NextTurn.bind(game));
+
+let btn2 = document.querySelector("#button2");
+btn2.addEventListener("click", game.WhoTurn.bind(game));
+
 // var board = new GameObjectMod.Board(10);
 // board.Render();

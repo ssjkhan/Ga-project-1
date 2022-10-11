@@ -40,7 +40,7 @@ export function Initialize() {
 	SetColors();
 }
 
-export function SetColors() {
+function SetColors() {
 	let i = 0;
 
 	colorScheme.forEach((color) => {

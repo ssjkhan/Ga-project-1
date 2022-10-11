@@ -1,10 +1,6 @@
 import * as UIModule from "./userInterface.js";
 import * as gameModule from "./game.js";
 
-/*
-    Represents a 
-*/
-
 export class Board {
 	constructor(n) {
 		this.length = n;
@@ -47,12 +43,9 @@ export class Board {
 		UIModule.gameBoard_HTML.style.gridTemplateAreas = grid_template_Areas;
 	}
 
-	Fire(cell_id) {}
-
 	PlaceShip(ship, gameTurn) {
 		let start = this.NextPlacement(ship, gameTurn);
-		let player = gameTurn === gameModule.GameTurn.Player ? "Player" : "Computer";
-		console.log(player + "\tStartPos\t" + start + "\tShip\t" + ship.id);
+
 		for (let i = 0; i < ship.length; i++) {
 			let y = start[0];
 			let x = start[1] + i;
@@ -124,6 +117,8 @@ export class Board {
 
 		return false;
 	}
+
+	ResetBoard() {}
 }
 
 class BoardCell {
