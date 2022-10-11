@@ -50,8 +50,9 @@ export class Board {
 	Fire(cell_id) {}
 
 	PlaceShip(ship, gameTurn) {
-		let start = this.NextRandomPlacement(ship, gameTurn);
-		console.log("StartPos\t" + start + "\tShip\t" + ship.id);
+		let start = this.NextPlacement(ship, gameTurn);
+		let player = gameTurn === gameModule.GameTurn.Player ? "Player" : "Computer";
+		console.log(player + "\tStartPos\t" + start + "\tShip\t" + ship.id);
 		for (let i = 0; i < ship.length; i++) {
 			let y = start[0];
 			let x = start[1] + i;
@@ -62,65 +63,58 @@ export class Board {
 		}
 	}
 
-	NextRandomPlacement(ship, gameTurn) {
+	NextPlacement(ship, gameTurn) {
+		let position = this.NextRandomPlacement(ship);
+
+		if (gameTurn === gameModule.GameTurn.Player) {
+			if (position[0] < 5) {
+				position[0] += 5;
+			}
+		} else {
+			if (position[0] > 4) {
+				position[0] -= 5;
+			}
+		}
+
+		return position;
+	}
+
+	NextRandomPlacement(ship) {
 		let yMin = 5;
 		let yLimit = 5;
 
 		let y_random = Math.floor(Math.random() * this.length);
 		let x_random = Math.floor(Math.random() * this.length);
 
-		if (gameTurn === gameModule.GameTurn.Player) {
-			if (y_random < yMin) {
-				y_random += yMin;
-			}
-		} else {
-			if (y_random >= yLimit) {
-				y_random -= yLimit;
-			}
-		}
-
-		return this.NextValidPlacement(
-			ship,
-			y_random,
-			x_random,
-			gameTurn,
-			yMin,
-			yLimit
-		);
+		return this.NextValidPlacement(ship, y_random, x_random);
 	}
 
-	NextValidPlacement(ship, y_start, x_start, gameTurn, yMin, yLimit) {
+	NextValidPlacement(ship, yStart, xStart) {
 		let len = ship.length;
 
-		for (let x = x_start; x < this.length; x++) {
+		for (let x = xStart; x < this.length; x++) {
 			// console.log("Checking x,y\t" + y_start + x);
-			let isValid = this.isValidPlacement(len, y_start, x);
+			let isValid = this.isValidPlacement(len, yStart, x);
 			// console.log(isValid);
 			if (isValid) {
-				return [y_start, x];
+				return [yStart, x];
 			}
 		}
 
-		for (let y = y_start + 1; y < this.length; y++) {
+		for (let y = yStart + 1; y < this.length; y++) {
 			for (let x = 0; x < this.length; x++) {
-				// console.log("Checking y,x\t" + y + x);
-
 				if (this.isValidPlacement(len, y, x)) return [y, x];
 			}
 		}
 
-		if (gameTurn === gameModule.GameTurn.Player) {
-			return this.NextValidPlacement(ship, yMin, 0, gameTurn, yMin, yLimit);
-		} else {
-			return this.NextValidPlacement(ship, 0, 0, gameTurn, yMin, yLimit);
-		}
+		return this.NextValidPlacement(ship, 0, 0);
 	}
 
-	isValidPlacement(len, y_start, x_start) {
+	isValidPlacement(len, yStart, xStart) {
 		let counter = len;
 		// console.log("hasShip\t" + this.board[y_start][x_start].hasShip);
-		for (let i = 0; i < this.length - x_start - 1; i++) {
-			let isFree = !this.board[y_start][x_start + i].hasShip;
+		for (let i = 0; i < this.length - xStart - 1; i++) {
+			let isFree = !this.board[yStart][xStart + i].hasShip;
 			if (isFree) counter--;
 			else {
 				return false;
