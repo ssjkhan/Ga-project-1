@@ -12,13 +12,8 @@ const Game = new GameMod.Game();
 // Update UI to script definitions
 // Create game variable, initalize game state
 // Create UI, initialize UI state
+Initialize();
 function Initialize() {
 	UIMod.Initialize();
 	Game.Initialize();
 }
-function NextMove() {}
-
-// draw game state to HTML document
-function Render() {}
-
-// testing
