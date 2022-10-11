@@ -51,7 +51,7 @@ export class Game {
 		if (this.turn === GameTurn.Computer) {
 			console.log("Wait your turn!");
 		} else {
-			console.log(event.target.id);
+			this.board.Fire(event.target.id);
 		}
 	}
 

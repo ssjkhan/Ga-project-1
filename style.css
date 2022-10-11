@@ -70,3 +70,11 @@ body {
 .hasShip {
 	background-color: blueviolet;
 }
+
+.hit {
+	background-color: orange;
+}
+
+.miss {
+	background-color: turquoise;
+}

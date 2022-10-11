@@ -118,6 +118,29 @@ export class Board {
 		return false;
 	}
 
+	Fire(cellID) {
+		let x = cellID.charAt(6);
+		let y = cellID.charAt(5);
+		let cell = this.board[y][x];
+		let cellHTML = UIModule.getCellFromCoord(y, x);
+
+		if (cell.hasShip) {
+			this.Hit(cell, cellHTML);
+		} else {
+			this.Miss(cell, cellHTML);
+		}
+	}
+
+	Hit(cell, cellHTML) {
+		cell.cellState = BoardCell.CellState.hit;
+		cellHTML.classList.add("hit");
+	}
+
+	Miss(cell, cellHTML) {
+		cell.cellState = BoardCell.CellState.miss;
+		cellHTML.classList.add("miss");
+	}
+
 	ResetBoard() {}
 }
 
@@ -126,10 +149,10 @@ class BoardCell {
 		this.x = x;
 		this.y = y;
 		this.hasShip = false;
-		this.cellVisibility = BoardCell.CellVisibilityStates.default;
+		this.cellState = BoardCell.CellState.default;
 	}
 
-	static CellVisibilityStates = {
+	static CellState = {
 		default: Symbol("default"),
 		miss: Symbol("miss"),
 		hit: Symbol("hit"),
