@@ -1,0 +1,3 @@
+/*
+    Handles the AI for random moves
+*/
