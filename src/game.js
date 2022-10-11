@@ -13,10 +13,12 @@ export class Game {
 		this.EnemyShips = gameObjModule.Ship.generateShips();
 		this.AllyShips = gameObjModule.Ship.generateShips();
 		this.turn = GameTurn.Computer;
+
+		this.board = new gameObjModule.Board(this.board_size);
+		this.gameAI = new AIModule.GameAI(this.board);
 	}
 
 	Initialize() {
-		this.board = new gameObjModule.Board(this.board_size);
 		this.board.Render();
 		this.AddListeners();
 		this.PlaceAllShips();
@@ -49,18 +51,27 @@ export class Game {
 
 	PlayerMove(event) {
 		if (this.turn === GameTurn.Computer) {
-			console.log("Wait your turn!");
 		} else {
+			//check valid move
+			console.log(event.target.id);
 			this.board.Fire(event.target.id);
+			this.NextTurn();
 		}
+
+		this.ComputerMove();
+	}
+
+	ComputerMove() {
+		let target = this.gameAI.generateMove(this.turn);
+		let targetStr = "cell-" + target[0] + target[1];
+		this.board.Fire(targetStr);
+		this.NextTurn();
 	}
 
 	NextTurn() {
 		if (this.turn === GameTurn.Computer) {
-			console.log("Computer -> Player");
 			this.turn = GameTurn.Player;
 		} else {
-			console.log("Player -> Computer");
 			this.turn = GameTurn.Computer;
 		}
 	}

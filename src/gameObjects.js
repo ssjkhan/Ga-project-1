@@ -119,8 +119,10 @@ export class Board {
 	}
 
 	Fire(cellID) {
+		console.log(cellID);
 		let x = cellID.charAt(6);
 		let y = cellID.charAt(5);
+		console.log("y,x \t" + y + x);
 		let cell = this.board[y][x];
 		let cellHTML = UIModule.getCellFromCoord(y, x);
 
@@ -144,7 +146,7 @@ export class Board {
 	ResetBoard() {}
 }
 
-class BoardCell {
+export class BoardCell {
 	constructor(x, y) {
 		this.x = x;
 		this.y = y;
