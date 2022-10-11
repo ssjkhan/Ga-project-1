@@ -1,6 +1,8 @@
 * {
 	margin: 0px;
 	padding: 0px;
+	color: var(--color7);
+	font-weight: bold;
 }
 
 body {
@@ -8,33 +10,36 @@ body {
 	height: 100vh;
 	width: 100vw;
 	grid-template-columns: 1fr 3fr 1fr;
-	grid-template-areas: " playerArea gameArea enemyArea";
+	grid-template-areas: " background1 gameArea background2";
 }
-
-#playerArea {
-	grid-area: playerArea;
+.backGround {
+	background-color: var(--color0);
 	display: flex;
+	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-
-	background-color: var(--color2);
 }
 
-#enemyArea {
-	grid-area: enemyArea;
-	display: flex;
-	justify-content: center;
-	align-items: center;
+#background1 {
+	grid-area: background1;
+}
 
-	background-color: var(--color2);
+#background2 {
+	grid-area: background2;
+	background-color: var(--color0);
 }
 
 #gameArea {
 	grid-area: gameArea;
 	justify-content: center;
-	display: grid;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
 	background-color: var(--color1);
 	padding: 2rem;
+
+	border: ridge 1rem var(--color5);
 }
 
 #gameBoard {
@@ -49,32 +54,60 @@ body {
 .cell {
 	min-width: 0;
 	min-height: 0;
-	background-color: white;
-	border: solid black 0.1rem;
+	background-color: var(--color2);
+	border: solid var(--color8) 0.1rem;
+	color: var(--color8);
+	font-size: 5vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 .cell:hover {
-	background-color: red;
+	background-color: var(--color7);
 }
 
 .scrimmage-top {
-	border-top: solid red 0.25rem;
+	border-top: solid var(--color8) 0.2rem;
 	margin-top: 0.1rem;
 }
 
 .scrimmage-bottom {
-	border-bottom: solid red 0.25rem;
+	border-bottom: solid var(--color8) 0.2rem;
 	margin-bottom: 0.1rem;
 }
 
-.hasShip[data-team="player"] {
-	background-color: blueviolet;
+.hasShip {
+	background-color: var(--color4);
 }
 
+/* .hasShip[data-team="player"] {
+	background-color: var(--color3);
+} */
 .hit {
-	background-color: orange;
+	background-color: var(--color6);
 }
 
 .miss {
-	background-color: turquoise;
+	background-color: var(--color1);
+}
+
+button {
+	background-color: var(--color4);
+	padding: 0.5rem 1rem;
+	border: outset 0.25rem var(--color7);
+	color: var(--color8);
+	min-width: 5rem;
+}
+
+button:hover {
+	border: inset 0.25rem var(--color8);
+}
+
+#scoreDisplay {
+	color: var(--color8);
+	font-size: 2rem;
+	text-align: center;
+	padding: 0;
+	margin: auto;
 }

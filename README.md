@@ -1,8 +1,8 @@
-# This is project-1 by Saad Khan
+# BattleShip - Survival at Sea
 
 ## Blurb
 
-Welcome to Project-1 for Toronto SEI-55, by Saad Khan.
+Welcome to Battleship, Project-1 for Toronto SEI-55, by Saad Khan.
 This is a browser implementation of the game battleship, where two masterminds face off in a daring game of chance, strategy, and mental warfare. Can you beat the computer?
 
 ## Technologies Used
@@ -12,7 +12,7 @@ This is a browser implementation of the game battleship, where two masterminds f
 
 ## Getting Started
 
-Try out the game [here](https://www.google.ca)
+Try out the game [here!](https://pages.git.generalassemb.ly/jsckhan/project-1/)
 
 ## Next Steps
 

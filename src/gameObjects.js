@@ -154,11 +154,13 @@ export class Board {
 	Hit(cell, cellHTML) {
 		cell.cellState = BoardCell.CellState.hit;
 		cellHTML.classList.add("hit");
+		cellHTML.textContent = "X";
 	}
 
 	Miss(cell, cellHTML) {
 		cell.cellState = BoardCell.CellState.miss;
 		cellHTML.classList.add("miss");
+		cellHTML.textContent = "O";
 	}
 
 	ResetBoard() {
@@ -168,6 +170,7 @@ export class Board {
 
 				let cellHTML = UIModule.getCellFromCoord(cell.y, cell.x);
 
+				cellHTML.textContent = "";
 				cellHTML.classList.remove("miss");
 				cellHTML.classList.remove("hit");
 				cellHTML.classList.remove("hasShip");

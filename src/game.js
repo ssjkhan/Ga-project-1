@@ -61,6 +61,7 @@ export class Game {
 		this.board.ResetBoard();
 		this.gameState = GameState.Play;
 		UIModule.score_HTML.textContent = "";
+		UIModule.NewGame_HTML.textContent = "New Game";
 	}
 
 	PlaceAllShips() {
@@ -74,6 +75,7 @@ export class Game {
 
 	AddListeners() {
 		let node = this;
+
 		this.board.board.forEach((row) => {
 			row.forEach((cell) => {
 				let cellHTMl = UIModule.getCellFromCoord(cell.y, cell.x);
@@ -89,6 +91,9 @@ export class Game {
 				});
 			});
 		});
+
+		UIModule.Surrender_HTML.addEventListener("click", this.Surrender.bind(this));
+		UIModule.NewGame_HTML.addEventListener("click", this.NewGame.bind(this));
 	}
 
 	PlayerMove(event) {
@@ -97,6 +102,7 @@ export class Game {
 		}
 
 		if (this.turn === GameTurn.Computer) {
+			return;
 		} else {
 			if (this.board.isValidMove(event.target.id, this.turn)) {
 				this.board.Fire(event.target.id);
@@ -124,7 +130,7 @@ export class Game {
 			() => {
 				node.board.Fire(targetStr);
 			},
-			node.timeDelay * 2,
+			node.timeDelay,
 			targetStr
 		);
 
@@ -162,6 +168,12 @@ export class Game {
 		return result;
 	}
 
+	Surrender() {
+		this.turn = GameTurn.Computer;
+		this.GameOver();
+		UIModule.score_HTML.textContent += " Surrender? Give me Death, Coward!";
+	}
+
 	GameOver() {
 		this.gameState = GameState.GameOver;
 
@@ -173,6 +185,7 @@ export class Game {
 		}
 
 		UIModule.score_HTML.textContent = winnerMessage;
+		UIModule.NewGame_HTML.textContent = "Play Again";
 	}
 }
 

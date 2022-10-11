@@ -3,6 +3,8 @@ export const gameBoard_HTML = document.querySelector("#gameBoard");
 export const score_HTML = document.querySelector("#scoreDisplay");
 export const playerArea_HTML = document.querySelector("#playerArea");
 export const enemyArea_HTML = document.querySelector("#enemyArea");
+export const NewGame_HTML = document.querySelector("#buttonNewGame");
+export const Surrender_HTML = document.querySelector("#buttonSurrender");
 
 export function getCellFromCoord(y, x) {
 	let cell = document.querySelector("#cell-" + y + x);
@@ -34,7 +36,11 @@ const colorSchemeB = [
 	"#9B2226",
 ];
 
-export const colorScheme = colorSchemeB;
+const colorSchemeC = ["#61312e", "#f6dd86", "#241b21", "#e9e6c0"];
+
+const colorSchemeD = ["#22223B", "#4A4E69", "#9A8C98", "#C9ADA7", "#F2E9E4"];
+
+export const colorScheme = colorSchemeA;
 
 export function Initialize() {
 	SetColors();
