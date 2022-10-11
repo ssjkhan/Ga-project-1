@@ -12,7 +12,7 @@ let btn = document.querySelector("#button1");
 btn.addEventListener("click", game.NextTurn.bind(game));
 
 let btn2 = document.querySelector("#button2");
-btn2.addEventListener("click", game.WhoTurn.bind(game));
+btn2.addEventListener("click", game.ResetGame.bind(game));
 
 // var board = new GameObjectMod.Board(10);
 // board.Render();

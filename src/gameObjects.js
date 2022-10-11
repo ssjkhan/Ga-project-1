@@ -118,11 +118,26 @@ export class Board {
 		return false;
 	}
 
-	Fire(cellID) {
-		console.log(cellID);
+	isValidMove(cellID, turn) {
 		let x = cellID.charAt(6);
 		let y = cellID.charAt(5);
-		console.log("y,x \t" + y + x);
+
+		if (turn === gameModule.GameTurn.Player) {
+			if (y >= 5) return false;
+		} else {
+			if (y <= 4) return false;
+		}
+
+		if (!this.board[y][x].cellState === BoardCell.CellState.default) {
+			return false;
+		}
+
+		return true;
+	}
+
+	Fire(cellID) {
+		let x = cellID.charAt(6);
+		let y = cellID.charAt(5);
 		let cell = this.board[y][x];
 		let cellHTML = UIModule.getCellFromCoord(y, x);
 
@@ -143,7 +158,16 @@ export class Board {
 		cellHTML.classList.add("miss");
 	}
 
-	ResetBoard() {}
+	ResetBoard() {
+		this.board.forEach((row) => {
+			row.forEach((cell) => {
+				cell.Reset();
+				let cellHTML = UIModule.getCellFromCoord(cell.y, cell.x);
+				cellHTML.classList.remove("miss");
+				cellHTML.classList.remove("hit");
+			});
+		});
+	}
 }
 
 export class BoardCell {
@@ -159,6 +183,11 @@ export class BoardCell {
 		miss: Symbol("miss"),
 		hit: Symbol("hit"),
 	};
+
+	Reset() {
+		this.hasShip = false;
+		this.cellState = BoardCell.CellState.default;
+	}
 
 	Render() {
 		let cell = document.createElement("div");

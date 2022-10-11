@@ -12,10 +12,15 @@ export class Game {
 		this.gameState = GameState.Battle;
 		this.EnemyShips = gameObjModule.Ship.generateShips();
 		this.AllyShips = gameObjModule.Ship.generateShips();
-		this.turn = GameTurn.Computer;
+		this.turn = GameTurn.Player;
 
 		this.board = new gameObjModule.Board(this.board_size);
 		this.gameAI = new AIModule.GameAI(this.board);
+		this.timeDelay = 2000;
+	}
+
+	myTimeout(func) {
+		setTimeout(func, this.timeDelay);
 	}
 
 	Initialize() {
@@ -29,6 +34,10 @@ export class Game {
 		this.gameState = GameState.Battle;
 		this.turn = GameTurn.Computer;
 		this.PlaceAllShips();
+	}
+
+	ResetGame() {
+		this.board.ResetBoard();
 	}
 
 	PlaceAllShips() {
@@ -53,12 +62,12 @@ export class Game {
 		if (this.turn === GameTurn.Computer) {
 		} else {
 			//check valid move
-			console.log(event.target.id);
-			this.board.Fire(event.target.id);
-			this.NextTurn();
+			if (this.board.isValidMove(event.target.id, this.turn)) {
+				this.board.Fire(event.target.id);
+				this.NextTurn();
+				this.ComputerMove();
+			}
 		}
-
-		this.ComputerMove();
 	}
 
 	ComputerMove() {
