@@ -45,6 +45,7 @@ export class Board {
 
 	PlaceShip(ship, gameTurn) {
 		let start = this.NextPlacement(ship, gameTurn);
+		let team = gameTurn === gameModule.GameTurn.Player ? "player" : "computer";
 
 		for (let i = 0; i < ship.length; i++) {
 			let y = start[0];
@@ -54,6 +55,7 @@ export class Board {
 
 			let cell = UIModule.getCellFromCoord(y, x);
 			cell.classList.add("hasShip");
+			cell.dataset.team = team;
 		}
 	}
 
@@ -87,9 +89,8 @@ export class Board {
 		let len = ship.length;
 
 		for (let x = xStart; x < this.length; x++) {
-			// console.log("Checking x,y\t" + y_start + x);
 			let isValid = this.isValidPlacement(len, yStart, x);
-			// console.log(isValid);
+
 			if (isValid) {
 				return [yStart, x];
 			}
@@ -106,7 +107,7 @@ export class Board {
 
 	isValidPlacement(len, yStart, xStart) {
 		let counter = len;
-		// console.log("hasShip\t" + this.board[y_start][x_start].hasShip);
+
 		for (let i = 0; i < this.length - xStart - 1; i++) {
 			let isFree = !this.board[yStart][xStart + i].hasShip;
 			if (isFree) counter--;
@@ -139,6 +140,7 @@ export class Board {
 	Fire(cellID) {
 		let x = cellID.charAt(6);
 		let y = cellID.charAt(5);
+
 		let cell = this.board[y][x];
 		let cellHTML = UIModule.getCellFromCoord(y, x);
 
@@ -163,7 +165,9 @@ export class Board {
 		this.board.forEach((row) => {
 			row.forEach((cell) => {
 				cell.Reset();
+
 				let cellHTML = UIModule.getCellFromCoord(cell.y, cell.x);
+
 				cellHTML.classList.remove("miss");
 				cellHTML.classList.remove("hit");
 				cellHTML.classList.remove("hasShip");

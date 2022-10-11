@@ -60,6 +60,7 @@ export class Game {
 	ResetGame() {
 		this.board.ResetBoard();
 		this.gameState = GameState.Play;
+		UIModule.score_HTML.textContent = "";
 	}
 
 	PlaceAllShips() {
@@ -97,7 +98,6 @@ export class Game {
 
 		if (this.turn === GameTurn.Computer) {
 		} else {
-			//check valid move
 			if (this.board.isValidMove(event.target.id, this.turn)) {
 				this.board.Fire(event.target.id);
 
@@ -165,14 +165,14 @@ export class Game {
 	GameOver() {
 		this.gameState = GameState.GameOver;
 
-		let winner;
+		let winnerMessage;
 		if (this.turn === GameTurn.Player) {
-			winner = "player";
+			winnerMessage = "You have won the battle!";
 		} else {
-			winner = "computer";
+			winnerMessage = "The enemy has won the battle!";
 		}
 
-		console.log("The game is over. Winner is\t" + winner);
+		UIModule.score_HTML.textContent = winnerMessage;
 	}
 }
 

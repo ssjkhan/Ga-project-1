@@ -67,7 +67,7 @@ body {
 	margin-bottom: 0.1rem;
 }
 
-.hasShip {
+.hasShip[data-team="player"] {
 	background-color: blueviolet;
 }
 
