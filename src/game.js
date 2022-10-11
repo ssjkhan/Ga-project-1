@@ -10,34 +10,56 @@ export class Game {
 	constructor(n) {
 		this.board_size = n;
 		this.gameState = GameState.Battle;
-		this.EnemyShips = gameObjModule.Ship.generateShips();
-		this.AllyShips = gameObjModule.Ship.generateShips();
+		this.EnemyShips = gameObjModule.Ship.generateShips(GameTurn.Player);
+		this.AllyShips = gameObjModule.Ship.generateShips(GameTurn.Computer);
 		this.turn = GameTurn.Player;
-
 		this.board = new gameObjModule.Board(this.board_size);
 		this.gameAI = new AIModule.GameAI(this.board);
-		this.timeDelay = 2000;
-	}
-
-	myTimeout(func) {
-		setTimeout(func, this.timeDelay);
+		this.timeDelay = 500;
 	}
 
 	Initialize() {
 		this.board.Render();
 		this.AddListeners();
-		this.PlaceAllShips();
+		this.NewGame();
+	}
+
+	getListOfAllyCells() {
+		let result = [];
+		this.board.board.forEach((row) => {
+			row.forEach((cell) => {
+				if (cell.hasShip && cell.team === GameTurn.Player) {
+					result.push(cell);
+				}
+			});
+		});
+		return result;
+	}
+
+	getListOfEnemyCells() {
+		let result = [];
+		this.board.board.forEach((row) => {
+			row.forEach((cell) => {
+				if (cell.hasShip && cell.team === GameTurn.Computer) {
+					result.push(cell);
+				}
+			});
+		});
+
+		return result;
 	}
 
 	NewGame() {
-		this.board.ResetBoard();
-		this.gameState = GameState.Battle;
-		this.turn = GameTurn.Computer;
+		this.ResetGame();
+		this.turn = GameTurn.Player;
 		this.PlaceAllShips();
+		this.AllyShipCells = this.getListOfAllyCells();
+		this.EnemyShipCells = this.getListOfEnemyCells();
 	}
 
 	ResetGame() {
 		this.board.ResetBoard();
+		this.gameState = GameState.Play;
 	}
 
 	PlaceAllShips() {
@@ -50,20 +72,40 @@ export class Game {
 	}
 
 	AddListeners() {
+		let node = this;
 		this.board.board.forEach((row) => {
 			row.forEach((cell) => {
 				let cellHTMl = UIModule.getCellFromCoord(cell.y, cell.x);
-				cellHTMl.addEventListener("click", this.PlayerMove.bind(this));
+				// cellHTMl.addEventListener("click", this.PlayerMove.bind(this));
+				cellHTMl.addEventListener("click", function () {
+					setTimeout(
+						function (event) {
+							node.PlayerMove(event);
+						}.bind(node),
+						node.timeDelay,
+						event
+					);
+				});
 			});
 		});
 	}
 
 	PlayerMove(event) {
+		if (this.gameState != GameState.Play) {
+			return;
+		}
+
 		if (this.turn === GameTurn.Computer) {
 		} else {
 			//check valid move
 			if (this.board.isValidMove(event.target.id, this.turn)) {
 				this.board.Fire(event.target.id);
+
+				if (this.isWin()) {
+					this.GameOver();
+					return;
+				}
+
 				this.NextTurn();
 				this.ComputerMove();
 			}
@@ -71,9 +113,26 @@ export class Game {
 	}
 
 	ComputerMove() {
+		if (this.gameState != GameState.Play) {
+			return;
+		}
+
 		let target = this.gameAI.generateMove(this.turn);
 		let targetStr = "cell-" + target[0] + target[1];
-		this.board.Fire(targetStr);
+		let node = this;
+		setTimeout(
+			() => {
+				node.board.Fire(targetStr);
+			},
+			node.timeDelay * 2,
+			targetStr
+		);
+
+		if (this.isWin()) {
+			this.GameOver();
+			return;
+		}
+		// this.board.Fire(targetStr);
 		this.NextTurn();
 	}
 
@@ -85,14 +144,41 @@ export class Game {
 		}
 	}
 
-	WhoTurn() {
-		console.log(this.turn);
+	isWin() {
+		let result = true;
+		let ShipCells;
+		if (this.turn === GameTurn.Player) {
+			ShipCells = this.AllyShipCells;
+		} else {
+			ShipCells = this.EnemyShipCells;
+		}
+
+		ShipCells.forEach((cell) => {
+			if (cell.cellState != gameObjModule.BoardCell.CellState.hit) {
+				result = false;
+			}
+		});
+
+		return result;
+	}
+
+	GameOver() {
+		this.gameState = GameState.GameOver;
+
+		let winner;
+		if (this.turn === GameTurn.Player) {
+			winner = "player";
+		} else {
+			winner = "computer";
+		}
+
+		console.log("The game is over. Winner is\t" + winner);
 	}
 }
 
 export const GameState = {
 	GameOver: Symbol("GameOver"),
-	Battle: Symbol("Battle"),
+	Play: Symbol("Play"),
 };
 
 export const GameTurn = {

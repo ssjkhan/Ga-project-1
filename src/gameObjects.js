@@ -50,6 +50,7 @@ export class Board {
 			let y = start[0];
 			let x = start[1] + i;
 			this.board[y][x].hasShip = true;
+			this.board[y][x].team = ship.team;
 
 			let cell = UIModule.getCellFromCoord(y, x);
 			cell.classList.add("hasShip");
@@ -165,6 +166,7 @@ export class Board {
 				let cellHTML = UIModule.getCellFromCoord(cell.y, cell.x);
 				cellHTML.classList.remove("miss");
 				cellHTML.classList.remove("hit");
+				cellHTML.classList.remove("hasShip");
 			});
 		});
 	}
@@ -212,13 +214,18 @@ export class BoardCell {
 }
 
 export class Ship {
-	constructor(n) {
+	constructor(n, team) {
 		this.length = n;
 		this.id = n;
+		this.team = team;
 	}
 
-	static generateShips() {
-		let shipsArr = Array.from({ length: 4 }, (_, i) => new Ship(i + 1));
+	static generateShips(team) {
+		// let shipsArr = Array.from({ length: 4 }, (_, i) => new Ship(i + 1, team));
+		let shipsArr = [];
+		for (let i = 1; i < 5; i++) {
+			shipsArr.push(new Ship(i, team));
+		}
 
 		return shipsArr;
 	}
