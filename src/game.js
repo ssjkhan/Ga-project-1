@@ -55,12 +55,13 @@ export class Game {
 		this.PlaceAllShips();
 		this.AllyShipCells = this.getListOfAllyCells();
 		this.EnemyShipCells = this.getListOfEnemyCells();
+		UIModule.display_HTML.textContent = "An enemy fleet approaches... FIRE!";
 	}
 
 	ResetGame() {
 		this.board.ResetBoard();
 		this.gameState = GameState.Play;
-		UIModule.score_HTML.textContent = "";
+		UIModule.display_HTML.textContent = "";
 		UIModule.NewGame_HTML.textContent = "New Game";
 	}
 
@@ -96,6 +97,23 @@ export class Game {
 		UIModule.NewGame_HTML.addEventListener("click", this.NewGame.bind(this));
 	}
 
+	SelectMessage(hitStatus) {
+		let Messages;
+		let Sayings =
+			this.turn === GameTurn.Computer
+				? UIModule.EnemySayings
+				: UIModule.AllySayings;
+
+		if (hitStatus) {
+			Messages = Sayings[0];
+		} else {
+			Messages = Sayings[1];
+		}
+
+		let index = Math.floor(Math.random() * Messages.length);
+		return Messages[index];
+	}
+
 	PlayerMove(event) {
 		if (this.gameState != GameState.Play) {
 			return;
@@ -105,7 +123,8 @@ export class Game {
 			return;
 		} else {
 			if (this.board.isValidMove(event.target.id, this.turn)) {
-				this.board.Fire(event.target.id);
+				let isHit = this.board.Fire(event.target.id);
+				UIModule.display_HTML.textContent = this.SelectMessage(isHit);
 
 				if (this.isWin()) {
 					this.GameOver();
@@ -125,12 +144,14 @@ export class Game {
 
 		let target = this.gameAI.generateMove(this.turn);
 		let targetStr = "cell-" + target[0] + target[1];
+
 		let node = this;
+
 		setTimeout(
 			() => {
 				node.board.Fire(targetStr);
 			},
-			node.timeDelay,
+			node.timeDelay * 4,
 			targetStr
 		);
 
@@ -138,8 +159,10 @@ export class Game {
 			this.GameOver();
 			return;
 		}
-		// this.board.Fire(targetStr);
-		this.NextTurn();
+
+		setTimeout(() => {
+			node.NextTurn();
+		}, node.timeDelay);
 	}
 
 	NextTurn() {
@@ -171,7 +194,7 @@ export class Game {
 	Surrender() {
 		this.turn = GameTurn.Computer;
 		this.GameOver();
-		UIModule.score_HTML.textContent += " Surrender? Give me Death, Coward!";
+		UIModule.display_HTML.textContent += " Surrender? Give me Death, Coward!";
 	}
 
 	GameOver() {
@@ -179,12 +202,12 @@ export class Game {
 
 		let winnerMessage;
 		if (this.turn === GameTurn.Player) {
-			winnerMessage = "You have won the battle!";
+			winnerMessage = "We won the battle. TO THE PLUNDER!";
 		} else {
-			winnerMessage = "The enemy has won the battle!";
+			winnerMessage = "We've lost! Every man for themselves!";
 		}
 
-		UIModule.score_HTML.textContent = winnerMessage;
+		UIModule.display_HTML.textContent = winnerMessage;
 		UIModule.NewGame_HTML.textContent = "Play Again";
 	}
 }

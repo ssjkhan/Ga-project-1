@@ -146,8 +146,10 @@ export class Board {
 
 		if (cell.hasShip) {
 			this.Hit(cell, cellHTML);
+			return true;
 		} else {
 			this.Miss(cell, cellHTML);
+			return false;
 		}
 	}
 

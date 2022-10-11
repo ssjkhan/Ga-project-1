@@ -3,7 +3,7 @@
 ## Blurb
 
 Welcome to Battleship, Project-1 for Toronto SEI-55, by Saad Khan.
-This is a browser implementation of the game battleship, where two masterminds face off in a daring game of chance, strategy, and mental warfare. Can you beat the computer?
+This is a browser implementation of the game battleship, where you and your captain face off against an enemy crew in a daring game of chance, strategy, and mental warfare. Can you beat the Dreaded Captain Roger?
 
 ## Technologies Used
 
