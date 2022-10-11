@@ -80,7 +80,7 @@ export class Game {
 		this.board.board.forEach((row) => {
 			row.forEach((cell) => {
 				let cellHTMl = UIModule.getCellFromCoord(cell.y, cell.x);
-				// cellHTMl.addEventListener("click", this.PlayerMove.bind(this));
+
 				cellHTMl.addEventListener("click", function () {
 					setTimeout(
 						function (event) {

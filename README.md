@@ -5,8 +5,8 @@
 Welcome to Battleship, Project-1 for Toronto SEI-55, by Saad Khan.
 This is a browser implementation of the game battleship, where you and your captain face off against an enemy crew in a daring game of chance, strategy, and mental warfare. Can you beat the Dreaded Captain Roger?
 
-[Better Not Miss](./images/GameScreenshot.png)
-[Sweet Victory](./images/GameScreenshot-2.png)
+![Better Not Miss](./images/GameScreenshot.png)
+![Sweet Victory](./images/GameScreenshot-2.png)
 
 ## Technologies Used
 

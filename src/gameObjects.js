@@ -230,7 +230,6 @@ export class Ship {
 	}
 
 	static generateShips(team) {
-		// let shipsArr = Array.from({ length: 4 }, (_, i) => new Ship(i + 1, team));
 		let shipsArr = [];
 		for (let i = 1; i < 5; i++) {
 			shipsArr.push(new Ship(i, team));
